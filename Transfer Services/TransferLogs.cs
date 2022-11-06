@@ -1,4 +1,4 @@
-namespace Relativity.Transfer.Sample
+namespace TrAPI.Transfer.Sample
 {
 	using System;
 
@@ -7,7 +7,7 @@ namespace Relativity.Transfer.Sample
     using TrAPI.Transfer;
 
 	/// <summary>
-	/// Represents a thread-safe class object to write debug, information, warning, and error logs using Relativity Logging.
+	/// Represents a thread-safe class object to write debug, information, warning, and error logs using TrAPI Logging.
 	/// </summary>
 	/// <remarks>
 	/// This is an alternative implementation of TrAPI Logging <see cref="ITransferLog"/> and can be used in client-side scenarios.
