@@ -1,4 +1,4 @@
-namespace Relativity.Transfer.Sample
+namespace TrAPI.Transfer.Sample
 {
     using System;
     using System.Collections.Generic;
@@ -8,22 +8,22 @@ namespace Relativity.Transfer.Sample
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Relativity.DataTransfer.Nodes;
-    using Relativity.DataTransfer.Nodes.PathConversion;
-    using Relativity.Logging;
-    using Relativity.Logging.Configuration;
-    using Relativity.Logging.Factory;
-    using Relativity.Transfer.Enumeration;
-    using Relativity.Transfer.Sample.Enums;
-    using Relativity.Transfer.Sample.Exceptions;
+    using TrAPI.DataTransfer.Nodes;
+    using TrAPI.DataTransfer.Nodes.PathConversion;
+    using TrAPI.Logging;
+    using TrAPI.Logging.Configuration;
+    using TrAPI.Logging.Factory;
+    using TrAPI.Transfer.Enumeration;
+    using TrAPI.Transfer.Sample.Enums;
+    using TrAPI.Transfer.Sample.Exceptions;
 
     public class SampleRunner
     {
-        private readonly string _relativityUrl = ConfigurationManager.AppSettings["RelativityUrl"];
+        private readonly string _TrAPIUrl = ConfigurationManager.AppSettings["TrAPIUrl"];
 
-        private readonly string _relativityUserName = ConfigurationManager.AppSettings["RelativityUserName"];
+        private readonly string _TrAPIUserName = ConfigurationManager.AppSettings["TrAPIUserName"];
 
-        private readonly string _relativityPassword = ConfigurationManager.AppSettings["RelativityPassword"];
+        private readonly string _TrAPIPassword = ConfigurationManager.AppSettings["TrAPIPassword"];
 
         private readonly int _workspaceId = int.Parse(ConfigurationManager.AppSettings["WorkspaceId"]);
 
@@ -106,7 +106,7 @@ namespace Relativity.Transfer.Sample
             // Configure the optional SEQ sink.
             loggerOptions.AddSinkParameter(SeqSinkConfig.ServerUrlSinkParameterKey, new Uri("http://localhost:5341"));
             ILog logger = LogFactory.GetLogger(loggerOptions);
-            return new RelativityTransferLog(logger, true);
+            return new TrAPITransferLog(logger, true);
         }
 
         public IRelativityTransferHost CreateRelativityTransferHost(ITransferLog log)
@@ -268,7 +268,7 @@ namespace Relativity.Transfer.Sample
 
         private Uri GetInstanceUrl()
         {
-            var urlTmp = new Uri(this._relativityUrl);
+            var urlTmp = new Uri(this._TrAPIUrl);
             var uriString = urlTmp.GetLeftPart(UriPartial.Authority);
             var url = new Uri(uriString);
 
