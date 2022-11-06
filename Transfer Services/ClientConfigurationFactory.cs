@@ -1,10 +1,10 @@
-﻿namespace Relativity.Transfer.Sample
+﻿namespace TrAPI.Transfer.Sample
 {
     using System.ComponentModel;
 
-    using Relativity.Transfer.Aspera;
-    using Relativity.Transfer.FileShare;
-    using Relativity.Transfer.Sample.Enums;
+    using TrAPI.Transfer.Aspera;
+    using TrAPI.Transfer.FileShare;
+    using TrAPI.Transfer.Sample.Enums;
 
     public class ClientConfigurationFactory
     {
