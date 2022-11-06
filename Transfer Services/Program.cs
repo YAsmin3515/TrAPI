@@ -1,10 +1,4 @@
-﻿﻿// ----------------------------------------------------------------------------
-// <copyright file="Program.cs" company="Relativity ODA LLC">
-//   © Relativity All Rights Reserved.
-// </copyright>
-// ----------------------------------------------------------------------------
-
-namespace Relativity.Transfer.Sample
+namespace TrAPI.Transfer.Sample
 {
     using System;
     using System.Collections.Generic;
@@ -12,7 +6,7 @@ namespace Relativity.Transfer.Sample
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Relativity.Transfer.Sample.Exceptions;
+    using TrAPI.Transfer.Sample.Exceptions;
 
     public class Program
     {
@@ -33,14 +27,14 @@ namespace Relativity.Transfer.Sample
                 
                 sampleRunner.InitializeGlobalSettings();
 
-                Console2.WriteLine($"Relativity {sampleRunner.TransferModeName} Transfer Sample");
+                Console2.WriteLine($"TrAPI {sampleRunner.TransferModeName} Transfer Sample");
 
                 Task.Run(
                     async () =>
                         {
-                            // Note: the RelativityTransferLog demonstrates how to create an ITransferLog implementation for Relativity Logging.
+                            // Note: the TrAPITransferLog demonstrates how to create an ITransferLog implementation for TrAPI Logging.
                             using (ITransferLog transferLog = sampleRunner.CreateTransferLog())
-                            using (IRelativityTransferHost host = sampleRunner.CreateRelativityTransferHost(transferLog)
+                            using (IRTrAPITransferHost host = sampleRunner.CreateTrAPITransferHost(transferLog)
                             )
                             using (CancellationTokenSource cancellationTokenSource = new CancellationTokenSource())
                             {
@@ -82,11 +76,11 @@ namespace Relativity.Transfer.Sample
             }
         }
 
-        private static async Task DemoTransferAsync(IRelativityTransferHost host, CancellationToken token, SampleRunner sampleRunner)
+        private static async Task DemoTransferAsync(ITrAPITransferHost host, CancellationToken token, SampleRunner sampleRunner)
         {
             // Search for the first logical file share.
             const int LogicalFileShareNumber = 1;
-            RelativityFileShare fileShare = await sampleRunner.GetFileShareAsync(host, LogicalFileShareNumber, token).ConfigureAwait(false);
+            TrAPIFileShare fileShare = await sampleRunner.GetFileShareAsync(host, LogicalFileShareNumber, token).ConfigureAwait(false);
 
             // Assigning the file share bypasses auto-configuration that will normally use the default workspace repository.
             sampleRunner.AssignFileshare(fileShare);
