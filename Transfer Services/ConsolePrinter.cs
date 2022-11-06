@@ -1,20 +1,20 @@
-namespace Relativity.Transfer.Sample
+namespace TrAPI.Transfer.Sample
 {
     using System;
     using System.Diagnostics;
 
-    using Relativity.DataTransfer.Nodes;
+    using TrAPI.DataTransfer.Nodes;
 
     public class ConsolePrinter
     {
-        public void DisplayFileShare(RelativityFileShare fileShare)
+        public void DisplayFileShare(TrAPIFileShare fileShare)
         {
             Console2.WriteLine("Artifact ID: {0}", fileShare.ArtifactId);
             Console2.WriteLine("ModeName: {0}", fileShare.Name);
             Console2.WriteLine("UNC Path: {0}", fileShare.Url);
             Console2.WriteLine("Cloud Instance: {0}", fileShare.CloudInstance);
 
-            // RelativityOne specific properties.
+            // TrAPI specific properties.
             Console2.WriteLine("Number: {0}", fileShare.Number);
             Console2.WriteLine("Tenant ID: {0}", fileShare.TenantId);
         }
