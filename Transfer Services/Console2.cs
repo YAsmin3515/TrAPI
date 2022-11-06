@@ -1,4 +1,4 @@
-﻿namespace Relativity.Transfer.Sample
+﻿namespace TrAPI.Transfer.Sample
 {
     using System;
 
