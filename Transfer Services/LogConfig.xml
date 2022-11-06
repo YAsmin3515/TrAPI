@@ -4,8 +4,8 @@
     <rule system="*" loggingLevel="Information" sink="File1;Seq1;Http1"/>
   </rules>
   <sinks>
-    <fileSink name="File1" logFileLocation="%temp%\Relativity-Transfer\Sample\" maxFileSizeInMB ="10000" />
+    <fileSink name="File1" logFileLocation="%temp%\TrAPI-Transfer\Sample\" maxFileSizeInMB ="10000" />
     <seqSink name="Seq1" batchSizeLimit="50" waitPeriodSeconds="15" />
-    <relativityHttpSink name="Http1" batchSizeLimit="50" waitPeriodSeconds="15" />
+    <TrAPIHttpSink name="Http1" batchSizeLimit="50" waitPeriodSeconds="15" />
   </sinks>
 </kCuraLogging>
