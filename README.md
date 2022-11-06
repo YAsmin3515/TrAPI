@@ -109,7 +109,7 @@ The CreateTransferLog() method uses a [TrAPI Logging] XML configuration file to 
 
 CreateTransferHost
 
-The CreateTransferHost() method defines a ConnectionInfo object to specify the TrAPIURL, credentials, and optional workspace artifact ID. The URL and credentials are supplied to all HTTP/REST endpoints and TrAPI supports both basic authentication and OAuth2 bearer tokens. For more information about OAuth2 clients, see ("https://www.techtarget.com/searchapparchitecture/definition/OAuth"). Once constructed, the RTrAPIConnectionInfo object is passed to the TransferHost constructor.
+The CreateTransferHost() method defines a ConnectionInfo object to specify the TrAPIURL, credentials, and optional workspace artifact ID. The URL and credentials are supplied to all HTTP/REST endpoints and TrAPI supports both basic authentication and OAuth2 bearer tokens. For more information about OAuth2 clients, see ("https://www.techtarget.com/searchapparchitecture/definition/OAuth"). Once constructed, the TrAPIConnectionInfo object is passed to the TransferHost constructor.
 
 CreateTransferClient
 
