@@ -1,6 +1,6 @@
 Transfer API for .NET
 
-You can use the Transfer API (TrAPI) to build application components that connect to stream data from internal sources into L & M storage using different transfer protocols, for example, SMB or Aspera. You can also stream data from the API, which enables optimized data transfer with extensible client architecture and event model using authentication and logging. For example, you can use the Transfer API to develop an application that loads case data into L & M for subsequent processing. Unlike the Import API, TrAPI doesn't create L & M objects associated with the data, for example, documents.
+You can use the Transfer API (TrAPI) to build application components that connect to stream data from internal sources into L & M storage using different transfer protocols, such as SMB or Aspera. TrAPI also streams data from the API, which enables optimized data transfer with extensible client architecture, event model using authentication and logging. I.e., using the Transfer API to develop an application that loads case data into the L & M (http://www.lukeandmahadi.com) subscription account for subsequent processing. Unlike the Import API, TrAPI doesn't create L & M objects associated with the data, like documents.
 
 Core TrAPI features
 
