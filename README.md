@@ -3,6 +3,7 @@ Transfer API for .NET
 You can use the Transfer API (TrAPI) to build application components that connect to stream data from internal sources into L & M storage using different transfer protocols, for example, SMB or Aspera. You can also stream data from the API, which enables optimized data transfer with extensible client architecture and event model using authentication and logging. For example, you can use the Transfer API to develop an application that loads case data into L & M for subsequent processing. Unlike the Import API, TrAPI doesn't create L & M objects associated with the data, for example, documents.
 
 Core TrAPI features
+
 The TrAPI includes the following core features:
 
 Async/await design
@@ -18,6 +19,7 @@ Logging with the L & M logging framework
 A sample solution to help you get started developing your own transfer applications.
 
 System requirements
+
 Ability to release for on-premises instances
 .NET 4.6.2
 Visual C++ 2010 x86 Runtime
@@ -26,6 +28,7 @@ Intel 2Ghz (2-4 cores is recommended)
 Note: The Visual C++ runtime is required for Open SSL and Big Data transfer client*
 
 Integrations
+
 TrAPI is seeking to become integrated within the following components and applications:
 
 Remote Desktop Client
@@ -37,9 +40,11 @@ The transfer API uses MEF (Managed Extensibility Framework) design to search and
 Workflow Automation
 Data Synchrinozation
 File share
+
 TrAPI transfer mode requires access to configured streaming service(s). File share transfer mode requires access to locations involved in upload or download for example via vpn.
 
 Long path support
+
 Long path support has been added in TAPI. Previous versions of TrAPI had a Windows-defined maximum transfer path limit of 260 characters due to limitations with Microsoft.NET System.IO API calls. In addition to limiting the path length in the CLI, this limitation also had consequences for products that use TrAPI (such as the RDC), where attempting to transfer any paths over this 260 character limit would result in a transfer failure. This limitation existed regardless of the transfer client used.
 
 The maximum path length now depends on the chosen transfer client. These limits apply for both the source and full target path lengths.
@@ -52,6 +57,7 @@ If a direct file share transfer is used, there is effectively no limit to the pa
 As part of these updates, a GlobalSetting variable has to be added to adjust the behavior when a path that is too long for the chosen client to transfer is found during enumeration. This setting, called SkipTooLongPaths, is a boolean value. If true, any paths longer than the client supported maximum will be classified as an Error Path, and won't be transferred. However, enumeration and the transfer of all other valid paths will complete as part of the transfer job. If false, the enumeration will throw a fatal PathTooLongException upon encountering an invalid path length, and the transfer will fail. No files will be transferred in this situation.
 
 Sample solution
+
 The Sample.sln solution is an out-of-the-box template for developing your own custom transfer applications and demonstrates Aspera and file share API usage.
 
 Prerequisites for running the solution:
@@ -84,6 +90,7 @@ CreateRelativityTransferHost
 CreateTransferClient
 Subscribe to transfer events
 Cancellation
+
 The use of cancellation token is strongly recommended with potentially long-running transfer operations. The sample wraps a CancellationTokenSource object within a using block, assigns the CancellationToken object to a variable, and passes the variable to all asynchronous methods.
 
 using (CancellationTokenSource cancellationTokenSource = new CancellationTokenSource())
@@ -91,22 +98,29 @@ using (CancellationTokenSource cancellationTokenSource = new CancellationTokenSo
     CancellationToken token = cancellationTokenSource.Token;
     ...
 }
+
 InitializeGlobalSettings
+
 The InitializeGlobalSettings() method is responsible for configuring the GlobalSettings.
 
 CreateTransferLog
+
 The CreateTransferLog() method uses a [TrAPI Logging] XML configuration file to create the ITransferLog instance used to log transfer details, warnings, and errors. It's entirely possible for API users to create an ITransferLog derived class object and use virtually any logging framework; however, the TrAPITransferLog class object is provided to simplify integration with TrAPI Logging. The LogConfig.xml is designed to write all entries to a rolling log file within the user profile %TEMP% directory and a local log server.
 
 CreateTransferHost
+
 The CreateTransferHost() method defines a ConnectionInfo object to specify the TrAPIURL, credentials, and optional workspace artifact ID. The URL and credentials are supplied to all HTTP/REST endpoints and TrAPI supports both basic authentication and OAuth2 bearer tokens. For more information about OAuth2 clients, see ("https://www.techtarget.com/searchapparchitecture/definition/OAuth"). Once constructed, the RTrAPIConnectionInfo object is passed to the TransferHost constructor.
 
 CreateTransferClient
+
 If a workspace artifact is specified within the TrAPIConnectionInfo object, the CreateClientAsync() method is designed to query the workspace, determine which transfer clients are supported (Aspera or file share), and choose the optimal client. If a client is specified within the ClientConfiguration object, the CreateClient() method explicitly instructs TrAPI to construct a certain type of client. There may be circumstances where direct access to the file share is guaranteed and the Client will always be your best transfer option. For more information, see Dynamic Transfer Client and ITransferClient.
 
 Subscribe to transfer events
+
 Since transfer events are used for both upload and download operations, the demo wraps this within the CreateTransferContext() method to construct the TransferContext object and write event details to the console. This object is used to decouple the event logic of the transfer - for example, progress and statistics - from the host and the client.
 
 Demo
+
 Real-world applications typically involve large or even massive datasets that not only require better transfer request management but provide real-time data rate, progress, and time remaining to their users.
 
 For first time executions, Windows may popup a Windows Defender window like the one below. If this is presented, click the "Allow access" button.
@@ -115,7 +129,8 @@ windowsdefender-firewall
 
 For this demo, the approach is as follows:
 
-Create a file share specific TrAPI client
+Create a file share specific TrAPI client:
+
 Specify a target file share
 Create an upload transfer job request and job
 Search for the local dataset and add the local transfer paths to the job
@@ -127,6 +142,7 @@ Create ClientConfiguration object
 The CreateClientConfiguration() method is responsible for creating and configuring the ClientConfiguration object. This object inherits all of the configurable properties found within ClientConfiguration, adds numerous client specific transfer properties if Data Sync client selected, and assigns streaming or Fileshare to the the Client property. This value is later evaluated by the CreateClientAsync() method to construct the specified TrAPI client.
 
 Search for specific file share
+
 Using a workspace to drive the selected file share is convenient but doesn't meet all workflow requirements. For example, consider a data migration application to move files from on-premise to RelativityOne. In this scenario, the target workspace may not even exist; however, the migration operator knows precisely which file share should be used. For scenarios like these, the File Storage Search API is provided.
 
 Note: You must be an admin to retrieve file shares from the instance. See Targeting file shares for more details.
@@ -136,6 +152,7 @@ Note: The GetTrAPIFileShare() method supports retrieving file shares by artifact
 Once the file share is retrieved by the GetFileShareAsync() method, the object is simply assigned to the TargetFileShare property found within the ClientConfiguration object.
 
 Search local source paths
+
 Data transfer workflows often involve large datasets stored on network servers or other enterprise storage devices. In many cases, the data transfer operator would like to transfer all of the files contained within a specified path. It's achieved with enumerators, created with EnumerationBuilder class. Enumerators supports features like:
 
 reporting current statistics,
@@ -144,20 +161,25 @@ filtering files and directories.
 For large datasets (IE 1M+), it's recommended to serialize the results to disk and batching the results in smaller chunks. Since the test dataset is small, the enumeration option is used. Enumeration returns the IEnumerable of TransferPath objects and uses the lambda expression to report useful statistics.
 
 Create job TransferRequest objects
+
 When defining a TransferRequest object to support transfer jobs, TransferPath objects are never added to the request as this responsibility is handled by the transfer job. Among the available overloads, the ForUploadJob() and ForDownloadJob() methods accept a target path and TransferContext object.
 
 Transfer jobs
+
 The transfer client is used to construct a new transfer job where TransferPath objects can be added at any point in time. It's understood that files are immediately transferred in the order that they've been added to the job. The ITransferJob instance is wrapped in a using block so that all resources are properly disposed.
 
 Change the data rate
+
 One of the other advantages with using a job is that it provides the API caller an object to perform job-specific operations like increasing or decreasing the data rate. Because not all TrAPI client support this feature, a convenient IsDataRateChangeSupported property is provided by the ITransferJob object.
 
 Start or debug
+
 Start or debug the project and ensure 5 files are successfully uploaded/downloaded and the application terminates with a zero exit code.
 
 The following sections provide detailed reference for the Transfer API operations illustrated by the sample program above.
 
 Usage
+
 The next sections cover TrAPI usage including:
 
 ConnectionInfo
@@ -192,12 +214,14 @@ DateTime object values
 Binding redirect for Json.NET
 Packaging and RCC package library
 ConnectionInfo
+
 The first thing you must do is construct a ConnectionInfo object, which requires the following:
 
 Property	Description
-Host	The TrAPI URL.
+Host		The TrAPI URL.
 Credential	The TrAPI credential used to authenticate HTTP/REST API calls.
 WorkspaceId	The workspace artifact identifier used to auto-configure the request with file share, credential, and other transfer settings.
+
 Note: The workspace artifact identifier can be set to Workspace.AdminWorkspaceId if the workspace is unknown or the transfer is manually configured. See Admin Workspace and Targeting file shares for more details.
 
 The following example uses basic username/password credentials.
@@ -208,6 +232,7 @@ var connectionInfo = new RelativityConnectionInfo(
     new Uri("http://localhost/TrAPI"),
     new BasicAuthenticationCredential("TrAPI.admin@landm.com", "MyUbreakablePassword777!"),
     WorkspaceId);
+    
 When using an OAUTH2 client to authenticate, the bearer token is provided instead.
 
 const int WorkspaceId = 111111;
@@ -216,6 +241,7 @@ var connectionInfo = new ConnectionInfo(
     new Uri("http://localhost/TrAPI"),
     new BearerTokenCredential(bearerToken),
     WorkspaceId);
+    
 When manually configuring the transfer, do not pass the workspace artifact. In this scenario, the Admin Workspace is implicitly specified.
 
 // This won't auto-configure the transfer.
@@ -233,18 +259,19 @@ Use CreateFileStorageSearch to retrieve all file share objects and target a spec
 Use VersionCheckAsync to perform a version check
 using (ITransferHost host = new TransferHost(connectionInfo))
 { }
+
 Note: This object implements the IDisposable interface to ensure the life-cycle is managed properly.
 
 ClientConfiguration
 Before you can create a client, you have to provide a ClientConfiguration instance. If you know which client you would like to construct, choose a strongly-typed class object that derives from ClientConfiguration. The vast majority of settings contained within this class object are supported by all clients unless otherwise specified.
 
-Property	Description	Default Value
+Property		Description														Default Value
 BadPathErrorsRetry	Enable or disable whether to retry intermittent TransferPathStatus.BadPathError I/O errors or treat as a fatal error.	false
-BcpRootFolder	The name of the folder, located at the root of the file shares, where all bulk-load files are stored.	null
-Client	The transfer client unique identifier. This is automatically set when the transfer client is constructed via best-fit strategy.	WellKnownTransferClient.Unassigned
-ClientId	The well-known transfer client value. This is automatically set when the transfer client is constructed via best-fit strategy.	Guid.Empty
-CookieContainer	The HTTP cookie container.	new instance
-Credential	The optional credential used in place of the workspace file share credential. Only specify the Credential or TargetFileShare property but not both.	null
+BcpRootFolder		The name of the folder, located at the root of the file shares, where all bulk-load files are stored.			null Client	
+The transfer client unique identifier. This is automatically set when the transfer client is constructed via best-fit strategy.	             WellKnownTransferClient 
+Unassigned ClientId	The well-known transfer client value. This is automatically set when the transfer client is constructed via best-fit strategy.	Guid.Empty
+CookieContainer	      The HTTP cookie container.												new instance
+Credential		The optional credential used in place of the workspace file share credential. Only specify the Credential or TargetFileShare property but not both.																		null
 FileNotFoundErrorsDisabled	Enable or disable whether to treat missing files as warnings or errors.	false
 FileNotFoundErrorsRetry	Enable or disable whether to retry missing file errors.	true
 FileSystemChunkSize	The size of each byte chunk transferred over file-system based transfer clients.	16KB
